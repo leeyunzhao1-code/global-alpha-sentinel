@@ -1,0 +1,114 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - POSTGRES_URL=postgresql://postgres:postgres@postgres:5432/gas
+      - INFLUXDB_URL=http://influxdb:8086
+      - MONGO_URL=mongodb://mongo:27017/gas
+    volumes:
+      - ./src:/app/src
+    depends_on:
+      - redis
+      - postgres
+      - influxdb
+      - mongo
+    networks:
+      - gas-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - gas-network
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: gas
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - gas-network
+
+  influxdb:
+    image: influxdb:2.7
+    environment:
+      INFLUXDB_DB: gas
+      INFLUXDB_ADMIN_USER: admin
+      INFLUXDB_ADMIN_PASSWORD: admin
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+    networks:
+      - gas-network
+
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - gas-network
+
+  grafana:
+    image: grafana/grafana:10
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - gas-network
+
+  worker:
+    build: .
+    command: celery -A src.tasks.celery_app worker --loglevel=info
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - POSTGRES_URL=postgresql://postgres:postgres@postgres:5432/gas
+    volumes:
+      - ./src:/app/src
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - gas-network
+
+  beat:
+    build: .
+    command: celery -A src.tasks.celery_app beat --loglevel=info
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - ./src:/app/src
+    depends_on:
+      - redis
+      - worker
+    networks:
+      - gas-network
+
+volumes:
+  redis_data:
+  postgres_data:
+  influxdb_data:
+  mongo_data:
+  grafana_data:
+
+networks:
+  gas-network:
+    driver: bridge
