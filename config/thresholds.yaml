@@ -1,0 +1,78 @@
+# Scoring Thresholds
+thresholds:
+  quality_score:
+    excellent: 80
+    good: 60
+    average: 40
+    poor: 20
+
+  value_score:
+    extremely_undervalued: 80
+    undervalued: 60
+    fair: 40
+    overvalued: 20
+
+  risk_score:
+    safe: 20
+    watch: 40
+    caution: 60
+    danger: 80
+
+  composite_score:
+    strong_buy: 70
+    buy: 50
+    watch: 20
+    sell: 0
+
+risk_checks:
+  yield_curve_inversion: -0.5
+  credit_spread_warning: 300
+  credit_spread_danger: 500
+  unemployment_spike: 0.5
+  pmi_contraction: 45
+  gdp_recession: 0
+
+  debt_ratio_warning: 0.6
+  debt_ratio_danger: 0.7
+  interest_coverage_warning: 1.5
+  interest_coverage_danger: 1.0
+  goodwill_ratio_warning: 0.3
+  goodwill_ratio_danger: 0.5
+  pledge_ratio_warning: 0.3
+  pledge_ratio_danger: 0.5
+
+valuation:
+  pe_discount: 0.30
+  pb_discount: 0.30
+  ps_discount: 0.30
+  fcf_yield_threshold: 0.05
+  dividend_yield_threshold: 0.03
+  peg_threshold: 1.0
+  dcf_discount_threshold: 0.20
+
+macro_weights:
+  recession_probability: 0.35
+  liquidity_risk: 0.25
+  inflation_risk: 0.20
+  yield_curve_risk: 0.20
+
+quality_weights:
+  profitability: 0.20
+  growth: 0.20
+  cashflow: 0.20
+  efficiency: 0.15
+  health: 0.15
+  shareholder: 0.10
+
+risk_weights:
+  financial_fraud: 0.20
+  delisting: 0.15
+  cashflow: 0.15
+  debt_default: 0.15
+  goodwill: 0.10
+  litigation: 0.05
+  regulatory: 0.10
+  management: 0.05
+  related_party: 0.05
+  reduction: 0.05
+  pledge: 0.05
