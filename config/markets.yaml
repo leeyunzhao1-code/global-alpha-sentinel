@@ -1,0 +1,103 @@
+# Market Configuration
+markets:
+  US:
+    name: "United States"
+    timezone: "America/New_York"
+    trading_hours: "09:30-16:00"
+    indices:
+      - SPX
+      - NDX
+      - DJI
+      - RUT
+    data_sources:
+      - yahoo_finance
+      - sec_edgar
+      - bloomberg
+
+  CN:
+    name: "China A-Shares"
+    timezone: "Asia/Shanghai"
+    trading_hours: "09:30-11:30,13:00-15:00"
+    indices:
+      - SH000001
+      - SZ399001
+      - SH000688
+      - SZ399006
+    data_sources:
+      - ifind
+      - wind
+      - eastmoney
+
+  HK:
+    name: "Hong Kong"
+    timezone: "Asia/Hong_Kong"
+    trading_hours: "09:30-12:00,13:00-16:00"
+    indices:
+      - HSI
+      - HSTECH
+    data_sources:
+      - ifind
+      - hkex
+      - bloomberg
+
+  JP:
+    name: "Japan"
+    timezone: "Asia/Tokyo"
+    trading_hours: "09:00-11:30,12:30-15:00"
+    indices:
+      - N225
+      - TPX
+    data_sources:
+      - yahoo_finance
+      - bloomberg
+
+  KR:
+    name: "South Korea"
+    timezone: "Asia/Seoul"
+    trading_hours: "09:00-15:30"
+    indices:
+      - KOSPI
+      - KOSDAQ
+    data_sources:
+      - yahoo_finance
+      - bloomberg
+
+asset_classes:
+  - equity
+  - etf
+  - reit
+  - adr
+  - bond
+  - forex
+  - commodity
+  - crypto
+
+update_frequencies:
+  real_time:
+    - stock_price
+    - order_book
+    - news_ticker
+
+  every_5_minutes:
+    - market_index
+    - sentiment_score
+    - liquidity_index
+
+  daily:
+    - stock_financials
+    - macro_indicators
+    - yield_curve
+    - credit_spread
+
+  weekly:
+    - fed_balance_sheet
+    - fund_flow
+
+  monthly:
+    - gdp_data
+    - cpi_ppi_data
+    - employment_data
+
+  quarterly:
+    - financial_reports
+    - industry_data
